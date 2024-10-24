@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% extends 'base.html' %}
+
+{% block title %}Transactions{% endblock %}
+
+{% block content %}
+    <h2>Transaction History</h2>
+    <div id="transaction-list">
+        <!-- Lịch sử giao dịch sẽ được hiển thị tại đây -->
+    </div>
+
+    <script>
+        function fetchTransactions(accountId) {
+            fetch(`/transactions/${accountId}`)
+            .then(response => response.json())
+            .then(data => {
+                const transactions = data.transactions;
+                let html = '<ul class="list-group">';
+                transactions.forEach(transaction => {
+                    html += `
+                        <li class="list-group-item">
+                            <strong>${transaction.transaction_type}:</strong> ${transaction.amount} on ${transaction.date}
+                        </li>
+                    `;
+                });
+                html += '</ul>';
+                document.getElementById('transaction-list').innerHTML = html;
+            });
+        }
+
+        // Thay accountId bằng ID tài khoản thực tế
+        fetchTransactions(1);
+    </script>
+{% endblock %}
+
+</body>
+</html>

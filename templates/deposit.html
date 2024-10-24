@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% extends 'base.html' %}
+
+{% block title %}Deposit{% endblock %}
+
+{% block content %}
+    <h2>Deposit Money</h2>
+    <form id="deposit-form">
+        <div class="form-group">
+            <label for="account_id">Account ID</label>
+            <input type="number" class="form-control" id="account_id" placeholder="Enter account ID">
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" class="form-control" id="amount" placeholder="Enter amount to deposit">
+        </div>
+        <button type="button" class="btn btn-primary" onclick="depositMoney()">Deposit</button>
+    </form>
+
+    <script>
+        function depositMoney() {
+            const account_id = document.getElementById('account_id').value;
+            const amount = document.getElementById('amount').value;
+
+            fetch('/deposit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ account_id, amount })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message));
+        }
+    </script>
+{% endblock %}
+
+</body>
+</html>
